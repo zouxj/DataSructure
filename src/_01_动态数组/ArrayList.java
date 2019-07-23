@@ -112,21 +112,34 @@ public class ArrayList<E> extends AbstractList<E> {
 		return ELEMENT_NOT_FOUND;
 	}
 	
-	/**
-	 * 保证要有capacity的容量
-	 * @param capacity
-	 */
-	private void ensureCapacity(int capacity) {
-		int oldCapacity = elements.length;
-		if (oldCapacity >= capacity) return;
-		
-		// 新容量为旧容量的1.5倍
-		int newCapacity = oldCapacity + (oldCapacity >> 1);
-		E[] newElements = (E[]) new Object[newCapacity];
+
+	//保证数组容量
+	private  final void ensureCapacity(int capacity) {
+		int oldCapacity=elements.length;
+		if (oldCapacity>=capacity)return;
+		//新的容量
+		int newCapacity=oldCapacity+(oldCapacity>>1);
+		E[]  newElements =(E[]) new Object[newCapacity];
 		for (int i = 0; i < size; i++) {
-			newElements[i] = elements[i];
+			newElements[i]=elements[i];
 		}
-		elements = newElements;
+		elements=newElements;
+		
+	}
+	//缩容
+	private final void trime() {
+		int oldCapacity=elements.length;
+		int newCapacity=oldCapacity>>1;
+		if (size>newCapacity || oldCapacity <= DEFAULT_CAPACITY) return;
+		//还剩余很多空间
+		E[] newElements=(E[])new Object[newCapacity];
+		for (int i = 0; i < size; i++) {
+			newElements[i]=elements[i];
+		}
+		elements=newElements;
+		
+		
+		
 	}
 	
 	@Override

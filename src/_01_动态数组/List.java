@@ -2,7 +2,8 @@ package _01_动态数组;
 
 public interface List<E> {
 	
-	static final int ELEMENT_NOT_FOUND = -1;
+	public static final int ELEMENT_NOT_FOUND = -1;
+
 	/**
 	 * 清除所有元素
 	 */
