@@ -6,15 +6,20 @@ public class Node<E> {
 	public E element;
 	//下一个节点的引用
 	public Node<E> nextNode;
+	
+	public Node<E> prevNode;
 
-	public Node(E element, Node<E> nextNode) {
+	public Node(E element,Node<E> prevNode, Node<E> nextNode) {
 		this.element = element;
 		this.nextNode = nextNode;
+		this.prevNode=prevNode;
 	}
 
 	@Override
 	public String toString() {
-		return "Node [element=" + element + ", nextNode=" + nextNode + "]";
+		StringBuffer sBuffer=new StringBuffer();
+		sBuffer.append(element).append("_").append(nextNode.element);
+		return sBuffer.toString();
 	}
 
 

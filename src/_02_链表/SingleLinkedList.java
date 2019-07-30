@@ -2,23 +2,14 @@ package _02_链表;
 import _01_动态数组.AbstractList;
 
 
-public class LinkedList<E> extends AbstractList<E> {
+public class SingleLinkedList<E> extends AbstractList<E> {
 
 	private Node<E> first;
-	private Node<E> last;
 	
-	/**
-	 * 
-	 * 
-	 * 
-	 * gc root对象
-	 * 被局部变量指向的对象
-	 */
 	@Override
 	public void clear() {
 		size=0;
-		first=null;
-		last=null;
+		first=new Node<>(null, null,null);
 		
 	}
 
@@ -71,25 +62,11 @@ public class LinkedList<E> extends AbstractList<E> {
 	@Override
 	public void add(int index, E element) {
 		rangeCheckForAdd(index);
-		if (index==size) {
-			//往最后一个添加元素
-			Node<E> oldLast=last;
-			last=new Node<E>(element, oldLast, null);
-			if (oldLast==null) {
-				first=last;
-			}else {
-				last.nextNode=last;
-			}
+		if (index==0) {
+			first=new Node<>(element,null,first);
 		}else {
-			Node<E> next=node(index);
-			Node<E> prev=next.prevNode;
-			Node<E> node = new Node<E>(element, prev, next);
-			next.prevNode=node;
-			if (prev==null) {
-				first=node;
-			}else {
-				prev.nextNode=node;
-			}
+			Node<E> prevNode  = node(index-1);
+			prevNode.nextNode=new Node<>(element,null,prevNode.nextNode);
 		}
 		size++;
 		
@@ -98,23 +75,16 @@ public class LinkedList<E> extends AbstractList<E> {
 	@Override
 	public E remove(int index) {
 		rangeCheck(index);
-		Node<E> node=node(index);
-		Node<E> prve=node.prevNode;
-		Node<E> next=node.nextNode;
-		//第一个
-		if (prve==null) {
-			first=next;
+		Node<E>	preNode=first;
+		if (index==0) {
+			first=(preNode=first.nextNode);
 		}else {
-			prve.nextNode=next;
-		}
-		//最后一个
-		if (next==null) {
-			last=prve;
-		}else {
-			next.prevNode = prve;
+			Node<E> node=node(index-1);
+			preNode=node.nextNode;
+			node.nextNode=node.nextNode.nextNode;
 		}
 		size--;
-		return node.element;
+		return preNode.element;
 	}
 
 	@Override
@@ -143,22 +113,11 @@ public class LinkedList<E> extends AbstractList<E> {
 	 */
 	public Node<E> node(int index) {
 		rangeCheck(index);
-		if (index<(size>>1)) {
-			Node<E> node =first;
-			for (int i = 0; i < index; i++) {
-				node=node.nextNode;
-			}
-			return node;
-		}else {
-			Node<E> node =last;
-			for (int i = size-1; i > index; i--) {
-				node=node.prevNode;
-			}
-			return node;
+		Node<E> node =first;
+		for (int i = 0; i < index; i++) {
+			node=node.nextNode;
 		}
-	
-	
-	
+		return node;
 	}
 	@Override
 	public String toString() {
